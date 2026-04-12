@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Удалить объявление — KaspiBoard{% endblock %}
+
+{% block content %}
+<div class="form-page">
+  <div class="form-card" style="max-width: 520px; margin: 60px auto; text-align: center;">
+    <div style="font-size: 48px; margin-bottom: 16px;">🗑️</div>
+    <h1 class="form-title" style="margin-bottom: 12px;">Удалить объявление?</h1>
+    <p style="color: var(--color-text-muted); margin-bottom: 32px;">
+      Вы уверены, что хотите удалить <strong>«{{ ad.title }}»</strong>?<br>
+      Это действие невозможно отменить.
+    </p>
+    <form method="post" style="display: flex; gap: 12px; justify-content: center;">
+      {% csrf_token %}
+      <a href="{% url 'profile' %}" class="btn btn--ghost btn--lg btn--pill">Отмена</a>
+      <button type="submit" class="btn btn--primary btn--lg btn--pill"
+              style="background: #e53935; border-color: #e53935;">
+        Да, удалить
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

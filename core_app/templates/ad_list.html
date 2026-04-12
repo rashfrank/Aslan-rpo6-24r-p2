@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Все объявления — KaspiBoard{% endblock %}
+
+{% block content %}
+
+<!-- ===== ПОИСК И ФИЛЬТРЫ ===== -->
+<div class="search-bar">
+  <form method="get" style="display:flex; gap:12px; flex-wrap:wrap; width:100%; align-items:center;">
+
+    <!-- Поле поиска -->
+    <div class="search-bar__input-wrap">
+      <span class="search-bar__input-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </span>
+      <input class="search-bar__input" type="text" name="q"
+             placeholder="Что вы ищете?" value="{{ request.GET.q }}">
+    </div>
+
+    <!-- Сортировка -->
+    <select name="sort" class="search-bar__select">
+      <option value="">Сначала новые</option>
+      <option value="cheap"     {% if request.GET.sort == 'cheap'     %}selected{% endif %}>Сначала дешёвые</option>
+      <option value="expensive" {% if request.GET.sort == 'expensive' %}selected{% endif %}>Сначала дорогие</option>
+      <option value="free"      {% if request.GET.sort == 'free'      %}selected{% endif %}>Только бесплатные</option>
+    </select>
+
+    <button type="submit" class="btn btn--primary">Найти</button>
+
+    {% if request.GET.q or request.GET.sort %}
+      <a href="{% url 'ad_list' %}" class="btn btn--ghost">Сбросить</a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- ===== ЛЕЙАУТ: САЙДБАР + СЕТКА ===== -->
+<div class="layout">
+
+  <!-- САЙДБАР: Категории -->
+  <aside class="sidebar">
+    <div class="sidebar__title">Категории</div>
+    <ul class="sidebar__list">
+      <li class="sidebar__item">
+        <a href="{% url 'ad_list' %}"
+           class="sidebar__link {% if not current_category %}is-active{% endif %}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          Все объявления
+        </a>
+      </li>
+      {% for cat in categories %}
+      <li class="sidebar__item">
+        <a href="{% url 'category_list' cat.slug %}"
+           class="sidebar__link {% if current_category == cat.slug %}is-active{% endif %}">
+          {% if cat.image %}
+            <img src="{{ cat.image.url }}" alt="" width="18" height="18"
+                 style="border-radius:4px; object-fit:cover;">
+          {% else %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+            </svg>
+          {% endif %}
+          {{ cat.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ: Сетка объявлений -->
+  <section>
+
+    <!-- Заголовок секции -->
+    <div class="section-title">
+      {% if current_category %}
+        {% for cat in categories %}{% if cat.slug == current_category %}{{ cat.name }}{% endif %}{% endfor %}
+      {% else %}
+        Все объявления
+      {% endif %}
+      <span class="text-muted text-sm" style="font-weight:600;">
+        ({{ page_obj.paginator.count }})
+      </span>
+    </div>
+
+    <!-- Сетка карточек -->
+    {% if page_obj.object_list %}
+    <div class="ads-grid">
+      {% for ad in page_obj %}
+
+      <!-- Карточка: VIP если is_top=True -->
+      <article class="ad-card {% if ad.is_top %}ad-card--vip{% endif %}">
+
+        <!-- Фото -->
+        <a href="{% url 'ad_detail' ad.uuid %}" class="ad-card__image-wrap">
+          {% if ad.is_top %}
+            <span class="badge--vip">
+              ★ VIP
+            </span>
+          {% endif %}
+
+          {% if ad.image %}
+            <img src="{{ ad.image.url }}" alt="{{ ad.title }}" loading="lazy">
+          {% else %}
+            <div class="ad-card__no-image">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              Нет фото
+            </div>
+          {% endif %}
+
+          <!-- Кнопка "В избранное" -->
+          {% if user.is_authenticated %}
+          <a href="{% url 'toggle_favorite' ad.uuid %}"
+             class="ad-card__fav-btn {% if ad.uuid in favorite_uuids %}is-fav{% endif %}"
+             title="В избранное" onclick="event.stopPropagation();">
+            {% if ad.uuid in favorite_uuids %}♥{% else %}♡{% endif %}
+          </a>
+          {% endif %}
+        </a>
+
+        <!-- Контент -->
+        <div class="ad-card__body">
+          <a href="{% url 'ad_detail' ad.uuid %}" class="ad-card__title">
+            {{ ad.title }}
+          </a>
+
+          <div class="ad-card__price {% if ad.price == 0 %}ad-card__price--free{% endif %}">
+            {% if ad.price == 0 %}Бесплатно{% else %}{{ ad.price|floatformat:0 }} ₸{% endif %}
+          </div>
+
+          <div class="ad-card__meta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            {{ ad.city.name }}
+            <span>&bull;</span>
+            {{ ad.created_at|date:"d M" }}
+          </div>
+        </div>
+
+      </article>
+      {% endfor %}
+    </div><!-- /.ads-grid -->
+
+    {% else %}
+    <!-- Пустое состояние -->
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <div class="empty-state__title">Ничего не найдено</div>
+      <p class="empty-state__text">Попробуйте изменить поисковый запрос или выбрать другую категорию.</p>
+      <a href="{% url 'ad_list' %}" class="btn btn--ghost">Сбросить фильтры</a>
+    </div>
+    {% endif %}
+
+    <!-- ===== ПАГИНАЦИЯ ===== -->
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Пагинация">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&{{ query_params }}"
+           class="pagination__btn">← Назад</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <span class="pagination__btn is-current">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a href="?page={{ num }}&{{ query_params }}"
+             class="pagination__btn">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&{{ query_params }}"
+           class="pagination__btn">Вперёд →</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+  </section>
+</div><!-- /.layout -->
+{% endblock %}

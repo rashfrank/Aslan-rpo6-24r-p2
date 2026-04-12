@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Мой профиль — KaspiBoard{% endblock %}
+
+{% block content %}
+
+<!-- ===== ШАПКА ПРОФИЛЯ ===== -->
+<div class="profile-header">
+  <div class="profile-avatar">
+    {{ user.first_name|first|default:user.username|first|upper }}
+  </div>
+  <div class="profile-info">
+    <div class="profile-info__name">
+      {{ user.first_name|default:user.username }}
+      {% if user.last_name %} {{ user.last_name }}{% endif %}
+    </div>
+    <div class="profile-info__meta">
+      @{{ user.username }} &bull; На сайте с {{ user.date_joined|date:"Y" }} года
+    </div>
+  </div>
+  <a href="{% url 'ad_create' %}" class="btn btn--primary btn--pill" style="margin-left:auto;">
+    + Новое объявление
+  </a>
+</div>
+
+<!-- ===== ЛЕЙАУТ: МОИ ОБЪЯВЛЕНИЯ + ИЗБРАННОЕ ===== -->
+<div class="profile-layout">
+
+  <!-- МОИ ОБЪЯВЛЕНИЯ -->
+  <div>
+    <div class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+      </svg>
+      Мои объявления
+      <span class="badge badge--info">{{ my_ads.count }}</span>
+    </div>
+
+    <div class="card">
+      {% if my_ads %}
+        {% for ad in my_ads %}
+        <div class="ad-list-item">
+
+          <!-- Превью фото -->
+          {% if ad.image %}
+            <img src="{{ ad.image.url }}" alt=""
+                 style="width:60px; height:60px; border-radius:var(--radius-md); object-fit:cover; flex-shrink:0;">
+          {% else %}
+            <div style="width:60px; height:60px; border-radius:var(--radius-md); background:var(--color-bg-alt); flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          <div style="flex:1; min-width:0;">
+            <a href="{% url 'ad_detail' ad.uuid %}" class="ad-list-item__title truncate" style="display:block;">
+              {{ ad.title }}
+            </a>
+            <div class="ad-list-item__price">
+              {% if ad.price == 0 %}Бесплатно{% else %}{{ ad.price|floatformat:0 }} ₸{% endif %}
+            </div>
+            <div style="margin-top:5px;">
+              {% if ad.is_moderated %}
+                <span class="badge badge--success">✓ Активно</span>
+              {% else %}
+                <span class="badge badge--warning">⏳ На проверке</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="ad-list-item__actions" style="display:flex; gap:8px;">
+            <a href="{% url 'ad_update' ad.uuid %}" class="btn btn--ghost btn--sm">Изменить</a>
+            <a href="{% url 'ad_delete' ad.uuid %}"
+               class="btn btn--ghost btn--sm"
+               style="color:var(--color-primary);"
+               data-confirm="Удалить объявление '{{ ad.title }}'?">Удалить</a>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <div class="empty-state__title">Нет объявлений</div>
+          <p class="empty-state__text">Создайте первое объявление и начните продавать!</p>
+          <a href="{% url 'ad_create' %}" class="btn btn--primary">+ Создать объявление</a>
+        </div>
+      {% endif %}
+    </div><!-- /.card -->
+  </div>
+
+  <!-- ИЗБРАННОЕ -->
+  <div>
+    <div class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      Избранное
+      <span class="badge badge--danger">{{ favorites.count }}</span>
+    </div>
+
+    <div class="card">
+      {% if favorites %}
+        <div class="fav-grid">
+          {% for fav in favorites %}
+          <div class="fav-item">
+            {% if fav.ad.image %}
+              <img src="{{ fav.ad.image.url }}" alt="{{ fav.ad.title }}" class="fav-item__img">
+            {% else %}
+              <div class="fav-item__img" style="display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            <div style="flex:1; min-width:0;">
+              <a href="{% url 'ad_detail' fav.ad.uuid %}" class="fav-item__title">{{ fav.ad.title }}</a>
+              <div class="fav-item__price">
+                {% if fav.ad.price == 0 %}Бесплатно{% else %}{{ fav.ad.price|floatformat:0 }} ₸{% endif %}
+              </div>
+            </div>
+
+            <a href="{% url 'toggle_favorite' fav.ad.uuid %}"
+               class="fav-item__remove" title="Убрать из избранного">♥</a>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <div class="empty-state__title">Пока пусто</div>
+          <p class="empty-state__text">Добавляйте понравившиеся объявления в избранное.</p>
+          <a href="{% url 'ad_list' %}" class="btn btn--ghost">Смотреть объявления</a>
+        </div>
+      {% endif %}
+    </div><!-- /.card -->
+  </div>
+
+</div><!-- /.profile-layout -->
+{% endblock %}

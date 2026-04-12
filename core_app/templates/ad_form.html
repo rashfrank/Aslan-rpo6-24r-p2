@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% if form.instance.pk %}Редактировать{% else %}Подать объявление{% endif %} — KaspiBoard{% endblock %}
+
+{% block content %}
+<div class="form-page">
+
+  <!-- Хлебные крошки -->
+  <nav style="font-size:13px; color:var(--color-text-muted); margin-bottom:20px; display:flex; gap:8px; align-items:center;">
+    <a href="{% url 'profile' %}" style="color:var(--color-primary);">Профиль</a>
+    <span>&rsaquo;</span>
+    <span>{% if form.instance.pk %}Редактировать{% else %}Новое объявление{% endif %}</span>
+  </nav>
+
+  <div class="form-card">
+    <h1 class="form-title">
+      {% if form.instance.pk %}✏️ Редактировать объявление{% else %}+ Подать объявление{% endif %}
+    </h1>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      <!-- Выводим каждое поле вручную для лучшего контроля над UI -->
+      {% for field in form %}
+      <div class="form-field">
+        <label class="form-label" for="{{ field.id_for_label }}">
+          {{ field.label }}
+          {% if field.field.required %}<span>*</span>{% endif %}
+        </label>
+
+        {{ field }}
+
+        {% if field.help_text %}
+          <span class="helptext">{{ field.help_text }}</span>
+        {% endif %}
+
+        {% if field.errors %}
+          <ul class="errorlist">
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      <!-- Не-полевые ошибки -->
+      {% if form.non_field_errors %}
+        <div class="alert alert--error" style="margin-bottom:16px;">
+          {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-actions">
+        <a href="{% url 'profile' %}" class="btn btn--ghost btn--lg">Отмена</a>
+        <button type="submit" class="btn btn--primary btn--lg btn--pill">
+          {% if form.instance.pk %}Сохранить изменения{% else %}Опубликовать{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

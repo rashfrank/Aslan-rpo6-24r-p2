@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Регистрация — KaspiBoard{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+  <div class="form-card">
+    <h1 class="form-title">Создать аккаунт</h1>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert--{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-field">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% if form.username.errors %}
+          <div class="errorlist">{{ form.username.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+
+      <div class="form-field">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+      </div>
+
+      <div class="form-field">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+      </div>
+
+      <!-- Новое поле телефона -->
+      <div class="form-field">
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        <small class="helptext">Укажите ваш номер, чтобы покупатели могли с вами связаться</small>
+      </div>
+
+      <div class="form-field">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+      </div>
+
+      <div class="form-field">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary btn--full">Зарегистрироваться</button>
+      </div>
+    </form>
+
+    <p style="text-align:center; margin-top:20px;">
+      Уже есть аккаунт? <a href="{% url 'login' %}" style="color:var(--red);">Войти</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

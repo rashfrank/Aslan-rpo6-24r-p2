@@ -13,7 +13,7 @@
   <span class="truncate" style="max-width:260px;color:var(--text-2);">{{ ad.title }}</span>
 </nav>
 
-<!-- ===== ОСНОВНОЙ ЛЕЙАУТ ===== -->
+<!--  ОСНОВНОЙ ЛЕЙАУТ  -->
 <div class="detail-layout">
 
   <!-- ЛЕВАЯ КОЛОНКА: Фото + Описание + Отзывы -->
@@ -63,7 +63,7 @@
       <p class="detail-card__desc">{{ ad.description }}</p>
     </div>
 
-    <!-- ===== ОТЗЫВЫ ===== -->
+    <!--  ОТЗЫВЫ -->
     <div class="reviews-section">
       <!-- ... (весь блок отзывов оставил без изменений) ... -->
       <div class="reviews-section__header">
@@ -253,7 +253,7 @@
 
 {% block extra_js %}
 <script>
-// === ПОКАЗАТЬ НОМЕР ТЕЛЕФОНА ===
+//  ПОКАЗАТЬ НОМЕР ТЕЛЕФОНА 
 document.addEventListener('DOMContentLoaded', function() {
     const btn = document.getElementById('reveal-phone-btn');
     if (!btn) return;

@@ -1,6 +1,4 @@
-/* ================================================
-   KaspiBoard — UI JavaScript v2
-   ================================================ */
+/* KaspiBoard — UI JavaScript v2 */
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -82,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* --- 8. STAR RATING — подсветка при наведении --- */
+  /* --- 8. STAR RATING - подсветка при наведении --- */
   const starLabels = document.querySelectorAll('.star-rating label');
   starLabels.forEach(function (label) {
     label.addEventListener('mouseenter', function () {

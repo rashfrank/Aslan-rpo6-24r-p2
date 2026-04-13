@@ -1,7 +1,5 @@
-/* ================================================
-   KaspiBoard — Design System v2
-   Mobile-first, app-like, Kaspi-inspired
-   ================================================ */
+/* KaspiBoard — Design System v2
+  Mobile-first, app-like, Kaspi-inspired */
 
 :root {
   --red:        #E8272E;
@@ -38,7 +36,7 @@
   --max: 1240px;
   --pad: 16px;
 
-  /* Нижняя навбар высота — добавляем отступ на мобиле */
+  /* Нижняя навбар высота - добавляем отступ на мобиле */
   --bottom-nav-h: 64px;
 }
 
@@ -62,10 +60,10 @@ img { max-width: 100%; display: block; }
 button, input, select, textarea { font-family: inherit; font-size: inherit; }
 ul { list-style: none; }
 
-/* ── CONTAINER ── */
+/*  CONTAINER  */
 .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
 
-/* ── NAVBAR (desktop) ── */
+/*  NAVBAR (desktop)  */
 .navbar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -87,7 +85,7 @@ ul { list-style: none; }
   letter-spacing: -.5px;
   flex-shrink: 0;
 }
-/* ── SEARCH ── */
+/*  SEARCH  */
 .navbar__search {
   position: relative;
   flex: 1;
@@ -100,7 +98,7 @@ ul { list-style: none; }
 
 .navbar__search input {
   width: 100% !important;
-  padding: 14px 20px 14px 56px !important;   /* большой отступ */
+  padding: 14px 20px 14px 56px !important;   
   border: 2px solid #E2E5E9 !important;
   border-radius: 50px !important;
   background: #f8f9fa !important;
@@ -144,7 +142,7 @@ ul { list-style: none; }
 }
 .navbar__link:hover { color: var(--text); background: var(--bg); }
 
-/* Гамбургер — скрыт на десктопе */
+/* Гамбургер - скрыт на десктопе */
 .navbar__toggle {
   display: none;
   background: none; border: none;
@@ -173,7 +171,7 @@ ul { list-style: none; }
 }
 .navbar__mobile-menu a:hover { background: var(--bg); color: var(--text); }
 
-/* ── BOTTOM NAV (mobile app-like) ── */
+/* BOTTOM NAV (mobile app-like) */
 .bottom-nav {
   display: none;
   position: fixed;
@@ -237,7 +235,7 @@ ul { list-style: none; }
   box-shadow: 0 6px 24px rgba(232,39,46,.55);
 }
 
-/* ── BUTTONS ── */
+/*  BUTTONS  */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 7px; padding: 10px 22px;
@@ -346,7 +344,7 @@ ul { list-style: none; }
   border-top: 1px solid var(--border);
 }
 
-/* ====================== NAVBAR ====================== */
+/*  NAVBAR  */
 .desktop-navbar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -405,8 +403,8 @@ ul { list-style: none; }
   .mobile-top-nav { display: none; }
 }
 
-/* ── SEARCH BAR ── */
-/* ── SEARCH BAR ── */
+/*  SEARCH BAR  */
+/*  SEARCH BAR  */
 .search-bar {
   background: var(--surface);
   border-radius: var(--r-xl);
@@ -428,9 +426,9 @@ ul { list-style: none; }
 
 .search-bar__input {
   width: 100%;
-  padding: 14px 20px 14px 54px !important;   /* большой отступ для иконки */
+  padding: 14px 20px 14px 54px !important;   
   border: 1.5px solid var(--border);
-  border-radius: 9999px;   /* полностью круглый */
+  border-radius: 9999px;   
   background: #f8f9fa;
   font-size: 16px;
   height: 54px;
@@ -471,7 +469,7 @@ ul { list-style: none; }
   outline: none;
   border-color: var(--red);
 }
-/* ── LAYOUT: SIDEBAR + CONTENT ── */
+/* LAYOUT: SIDEBAR + CONTENT  */
 .layout {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -479,7 +477,7 @@ ul { list-style: none; }
   align-items: start;
 }
 
-/* ── SIDEBAR ── */
+/*  SIDEBAR  */
 .sidebar {
   background: var(--surface);
   border-radius: var(--r-lg);
@@ -507,7 +505,7 @@ ul { list-style: none; }
   border-left-color: var(--red);
 }
 
-/* ── PAGINATION ── */
+/*  PAGINATION  */
 .pagination {
   display: flex; align-items: center;
   justify-content: center; gap: 6px; margin-top: 36px;
@@ -524,7 +522,7 @@ ul { list-style: none; }
 .pagination__btn:hover { border-color: var(--red); color: var(--red); background: var(--red-soft); }
 .pagination__btn.is-current { background: var(--red); color: #fff; border-color: var(--red); }
 
-/* ── AD DETAIL ── */
+/*  AD DETAIL  */
 .detail-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -589,7 +587,7 @@ ul { list-style: none; }
   border-top: 1px solid var(--border);
 }
 
-/* ── ОТЗЫВЫ / REVIEWS ── */
+/*  ОТЗЫВЫ / REVIEWS  */
 .reviews-section {
   background: var(--surface);
   border-radius: var(--r-lg);
@@ -645,7 +643,7 @@ ul { list-style: none; }
 }
 .review-form__title { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
 
-/* Звёздный рейтинг — интерактивный */
+/* Звёздный рейтинг - интерактивный */
 .star-rating {
   display: flex; gap: 6px; margin-bottom: 14px;
   flex-direction: row-reverse; justify-content: flex-end;
@@ -679,7 +677,7 @@ ul { list-style: none; }
 }
 .review-form__actions { margin-top: 12px; display: flex; justify-content: flex-end; }
 
-/* ── FORMS ── */
+/*  FORMS  */
 .form-page { max-width: 660px; margin: 0 auto; padding: 28px 0 64px; }
 .form-card {
   background: var(--surface); border-radius: var(--r-xl);
@@ -716,7 +714,7 @@ textarea { min-height: 130px; resize: vertical; }
 }
 .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 28px; }
 
-/* ── PROFILE ── */
+/*  PROFILE  */
 .profile-header {
   background: var(--surface); border-radius: var(--r-xl);
   box-shadow: var(--sh-sm); padding: 24px 28px;
@@ -770,7 +768,7 @@ textarea { min-height: 130px; resize: vertical; }
 }
 .fav-item__remove:hover { transform: scale(1.2); }
 
-/* ── BADGES ── */
+/*  BADGES  */
 .badge {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 3px 9px; border-radius: var(--r-full);
@@ -781,13 +779,13 @@ textarea { min-height: 130px; resize: vertical; }
 .badge--danger  { background: #FFE4E6; color: #9F1239; }
 .badge--info    { background: var(--blue-soft); color: #1E40AF; }
 
-/* ── CARD WRAPPER ── */
+/* CARD WRAPPER  */
 .card { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--sh-sm); overflow: hidden; }
 .card__header { padding: 18px 22px 0; display: flex; align-items: center; justify-content: space-between; }
 .card__title { font-size: 16px; font-weight: 800; }
 .card__body { padding: 18px 22px 22px; }
 
-/* ── ALERTS ── */
+/*  ALERTS  */
 .alerts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
 .alert {
   display: flex; align-items: center; gap: 10px;
@@ -801,7 +799,7 @@ textarea { min-height: 130px; resize: vertical; }
 .alert__close { margin-left: auto; background: none; border: none; cursor: pointer; font-size: 18px; line-height: 1; color: inherit; opacity: .6; }
 .alert__close:hover { opacity: 1; }
 
-/* ── LOADER ── */
+/*  LOADER  */
 .page-loader {
   position: fixed; inset: 0;
   background: rgba(255,255,255,.9);
@@ -817,7 +815,7 @@ textarea { min-height: 130px; resize: vertical; }
   animation: spin .8s linear infinite;
 }
 
-/* ── EMPTY STATES ── */
+/*  EMPTY STATES  */
 .empty-state {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -828,7 +826,7 @@ textarea { min-height: 130px; resize: vertical; }
 .empty-state__title { font-size: 17px; font-weight: 800; color: var(--text-2); }
 .empty-state__text { font-size: 13px; max-width: 320px; }
 
-/* ── FOOTER ── */
+/*  FOOTER  */
 .footer {
   background: var(--surface); border-top: 1px solid var(--border);
   padding: 24px 0; margin-top: 48px;
@@ -837,7 +835,7 @@ textarea { min-height: 130px; resize: vertical; }
 .footer__logo { font-size: 17px; font-weight: 900; color: var(--red); }
 .footer__copy { font-size: 12px; color: var(--text-3); }
 
-/* ── UTILS ── */
+/*  UTILS  */
 .mt-auto { margin-top: auto; }
 .text-muted { color: var(--text-3); }
 .text-sm { font-size: 13px; }
@@ -849,7 +847,7 @@ textarea { min-height: 130px; resize: vertical; }
   display: flex; align-items: center; gap: 10px;
 }
 
-/* ── ANIMATIONS ── */
+/*  ANIMATIONS  */
 @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -862,7 +860,7 @@ textarea { min-height: 130px; resize: vertical; }
 .ads-grid .ad-card:nth-child(7)  { animation-delay: .28s; }
 .ads-grid .ad-card:nth-child(8)  { animation-delay: .32s; }
 
-/* ── RESPONSIVE ── */
+/*  RESPONSIVE  */
 @media (max-width: 960px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar {
@@ -887,7 +885,7 @@ textarea { min-height: 130px; resize: vertical; }
   .search-bar__input-wrap { min-width: 0; }
   .search-bar__select { min-width: 0; width: 100%; }
 
-  /* Сетка — 2 колонки на мобиле */
+  /* Сетка - 2 колонки на мобиле */
   .ads-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;

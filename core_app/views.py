@@ -15,7 +15,7 @@ from rest_framework import viewsets, filters
 from .serializers import AdSerializer, ReviewSerializer
 
 
-# ====================== АВТОРИЗАЦИЯ ======================
+# АВТОРИЗАЦИЯ 
 
 def register_view(request):
     if request.user.is_authenticated:
@@ -45,7 +45,7 @@ def logout_view(request):
     return redirect('ad_list')
 
 
-# ====================== ПРОФИЛЬ ======================
+#  ПРОФИЛЬ 
 @login_required
 def profile_view(request):
     my_ads = Ad.objects.filter(author=request.user).order_by('-created_at')
@@ -56,7 +56,7 @@ def profile_view(request):
     })
 
 
-# ====================== ОБЪЯВЛЕНИЯ ======================
+#  ОБЪЯВЛЕНИЯ 
 def ad_list_view(request, slug=None):
     ads = Ad.objects.filter(is_moderated=True)
     if slug:
@@ -213,7 +213,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     
 
 @login_required
-def add_or_edit_review(request, uuid):          # ← изменили ad_uuid → uuid
+def add_or_edit_review(request, uuid):         
     ad = get_object_or_404(Ad, uuid=uuid)
     
     # Проверяем, есть ли уже отзыв от этого пользователя
@@ -229,7 +229,7 @@ def add_or_edit_review(request, uuid):          # ← изменили ad_uuid �
             review_obj.save()
             
             messages.success(request, "Отзыв успешно сохранён!")
-            return redirect('ad_detail', pk=ad.uuid)   # или uuid=ad.uuid
+            return redirect('ad_detail', pk=ad.uuid)   
         else:
             messages.error(request, "Ошибка при сохранении отзыва")
     else:
